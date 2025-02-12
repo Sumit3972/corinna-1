@@ -3,6 +3,7 @@
 import { client } from '@/lib/prisma'
 import { currentUser, redirectToSignIn } from '@clerk/nextjs'
 import { onGetAllAccountDomains } from '../settings'
+import { redirect } from 'next/navigation';
 
 export const onCompleteUserRegistration = async (
   fullname: string,
@@ -51,6 +52,10 @@ export const onLoginUser = async () => {
       })
       if (authenticated) {
         const domains = await onGetAllAccountDomains()
+        
+        // 🔥 Manually redirect to dashboard after login
+        redirect('/dashboard'); 
+        
         return { status: 200, user: authenticated, domain: domains?.domains }
       }
     } catch (error) {
